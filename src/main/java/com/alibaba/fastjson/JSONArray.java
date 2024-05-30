@@ -16,165 +16,253 @@ import java.util.function.UnaryOperator;
 public class JSONArray extends JSON implements List<Object> {
     private final List<Object> list;
 
+    /**
+     * 构造方法
+     *
+     * @param list list
+     */
     public JSONArray(List<Object> list) {
         this.list = list;
     }
 
+    /**
+     * 构造方法
+     *
+     * @param size size
+     */
     public JSONArray(int size) {
         list = new ArrayList<>(size);
     }
 
-
+    /**
+     * 构造方法
+     */
     public JSONArray() {
         list = new ArrayList<>(16);
     }
 
+    /**
+     * 根据下标获取JSONObject
+     *
+     * @param index index
+     * @return JSONArray
+     */
     public JSONObject getJSONObject(int index) {
         Object value = list.get(index);
-
         if (value instanceof JSONObject) {
             return (JSONObject) value;
         }
-
         if (value instanceof Map) {
             return new JSONObject((Map) value);
         }
-
         return null;
     }
 
+    /**
+     * 根据下标获取JSONArray
+     *
+     * @param index index
+     * @return JSONArray
+     */
     public JSONArray getJSONArray(int index) {
         Object value = list.get(index);
-
         if (value instanceof JSONArray) {
             return (JSONArray) value;
         }
-
         if (value instanceof List) {
             return new JSONArray((List) value);
         }
-
         return null;
     }
 
-
+    /**
+     * 根据下标获取Boolean
+     *
+     * @param index index
+     * @return JSONArray
+     */
     public Boolean getBoolean(int index) {
         Object value = get(index);
-
         if (value == null) {
             return null;
         }
-
         return TypeUtils.castToBoolean(value);
     }
 
+    /**
+     * 根据下标获取Boolean
+     *
+     * @param index index
+     * @return JSONArray
+     */
     public boolean getBooleanValue(int index) {
         Object value = get(index);
-
         if (value == null) {
             return false;
         }
-
         return TypeUtils.castToBoolean(value);
     }
+
+    /**
+     * 类转List
+     *
+     * @param clazz clazz
+     * @param <T>   T
+     * @return JSONArray
+     */
     public <T> List<T> toJavaList(Class<T> clazz) {
         return parseArray(toJSONString(), clazz);
     }
 
+    /**
+     * 根据下标获取Byte
+     *
+     * @param index index
+     * @return JSONArray
+     */
     public Byte getByte(int index) {
         Object value = get(index);
-
         return TypeUtils.castToByte(value);
     }
 
+    /**
+     * 根据下标获取Byte
+     *
+     * @param index index
+     * @return JSONArray
+     */
     public byte getByteValue(int index) {
         Object value = get(index);
-
         Byte byteVal = TypeUtils.castToByte(value);
         if (byteVal == null) {
             return 0;
         }
-
         return byteVal;
     }
 
+    /**
+     * 根据下标获取Short
+     *
+     * @param index index
+     * @return Short
+     */
     public Short getShort(int index) {
         Object value = get(index);
-
         return TypeUtils.castToShort(value);
     }
 
+    /**
+     * 根据下标获取Short
+     *
+     * @param index index
+     * @return short
+     */
     public short getShortValue(int index) {
         Object value = get(index);
-
         Short shortVal = TypeUtils.castToShort(value);
         if (shortVal == null) {
             return 0;
         }
-
         return shortVal;
     }
 
+    /**
+     * 根据下标获取Integer
+     *
+     * @param index index
+     * @return Integer
+     */
     public Integer getInteger(int index) {
         Object value = get(index);
-
         return TypeUtils.castToInt(value);
     }
 
+    /**
+     * 根据下标获取Integer
+     *
+     * @param index index
+     * @return int
+     */
     public int getIntValue(int index) {
         Object value = get(index);
-
         Integer intVal = TypeUtils.castToInt(value);
         if (intVal == null) {
             return 0;
         }
-
         return intVal;
     }
 
+    /**
+     * 根据下标获取Long
+     *
+     * @param index index
+     * @return Long
+     */
     public Long getLong(int index) {
         Object value = get(index);
-
         return TypeUtils.castToLong(value);
     }
 
+    /**
+     * 根据下标获取Long
+     *
+     * @param index index
+     * @return long
+     */
     public long getLongValue(int index) {
         Object value = get(index);
-
         Long longVal = TypeUtils.castToLong(value);
         if (longVal == null) {
             return 0L;
         }
-
         return longVal;
     }
 
+    /**
+     * 根据下标获取Float
+     *
+     * @param index index
+     * @return Float
+     */
     public Float getFloat(int index) {
         Object value = get(index);
-
         return TypeUtils.castToFloat(value);
     }
 
+    /**
+     * 根据下标获取Float
+     *
+     * @param index index
+     * @return float
+     */
     public float getFloatValue(int index) {
         Object value = get(index);
-
         Float floatValue = TypeUtils.castToFloat(value);
         if (floatValue == null) {
             return 0F;
         }
-
         return floatValue;
     }
 
+    /**
+     * 根据下标获取Double
+     *
+     * @param index index
+     * @return Double
+     */
     public Double getDouble(int index) {
         Object value = get(index);
-
         return TypeUtils.castToDouble(value);
     }
 
+    /**
+     * 根据下标获取Double
+     *
+     * @param index index
+     * @return double
+     */
     public double getDoubleValue(int index) {
         Object value = get(index);
-
         Double doubleValue = TypeUtils.castToDouble(value);
         if (doubleValue == null) {
             return 0D;
@@ -182,25 +270,46 @@ public class JSONArray extends JSON implements List<Object> {
         return doubleValue;
     }
 
+    /**
+     * 根据下标获取BigDecimal
+     *
+     * @param index index
+     * @return BigDecimal
+     */
     public BigDecimal getBigDecimal(int index) {
         Object value = get(index);
-
         return TypeUtils.castToBigDecimal(value);
     }
 
+    /**
+     * 根据下标获取BigInteger
+     *
+     * @param index index
+     * @return BigInteger
+     */
     public BigInteger getBigInteger(int index) {
         Object value = get(index);
-
         return TypeUtils.castToBigInteger(value);
     }
 
+    /**
+     * 根据下标获取String
+     *
+     * @param index index
+     * @return String
+     */
     public String getString(int index) {
         Object value = get(index);
-
         return TypeUtils.castToString(value);
     }
 
-
+    /**
+     * 根据下标获取Object
+     *
+     * @param index index
+     * @param clazz clazz
+     * @return T
+     */
     public <T> T getObject(int index, Class<T> clazz) {
         Object obj = list.get(index);
         if (obj.getClass() == clazz) {
@@ -212,13 +321,19 @@ public class JSONArray extends JSON implements List<Object> {
         return parseObject(toJSONString(obj), clazz);
     }
 
+    /**
+     * 根据下标获取Object
+     * @return T
+     */
     public String toJSONString() {
         return toJSONString(list);
     }
+
     @Override
     public String toString() {
         return toJSONString();
     }
+
     @Override
     public int size() {
         return list.size();

@@ -61,15 +61,12 @@ public class JSONObject extends JSON implements Map<String, Object> {
         if (value instanceof JSONObject) {
             return (JSONObject) value;
         }
-
         if (value instanceof Map) {
             return new JSONObject((Map) value);
         }
-
         if (value instanceof String) {
             return parseObject((String) value);
         }
-
         return parseObject(toJSONString(value));
     }
 
@@ -81,23 +78,18 @@ public class JSONObject extends JSON implements Map<String, Object> {
      */
     public JSONArray getJSONArray(String key) {
         Object value = map.get(key);
-
         if (value == null) {
             return new JSONArray();
         }
-
         if (value instanceof JSONArray) {
             return (JSONArray) value;
         }
-
         if (value instanceof List) {
             return new JSONArray((List) value);
         }
-
         if (value instanceof String) {
             return parseArray((String) value);
         }
-
         return parseArray(toJSONString(value));
     }
 
@@ -142,12 +134,10 @@ public class JSONObject extends JSON implements Map<String, Object> {
      */
     public boolean getBooleanValue(String key) {
         Object value = get(key);
-
         Boolean booleanVal = TypeUtils.castToBoolean(value);
         if (booleanVal == null) {
             return false;
         }
-
         return booleanVal;
     }
 
@@ -237,7 +227,6 @@ public class JSONObject extends JSON implements Map<String, Object> {
      */
     public Long getLong(String key) {
         Object value = get(key);
-
         return TypeUtils.castToLong(value);
     }
 
@@ -338,14 +327,30 @@ public class JSONObject extends JSON implements Map<String, Object> {
      */
     public String getString(String key) {
         Object value = get(key);
-
         if (value == null) {
             return null;
         }
-
         return value.toString();
     }
 
+    /**
+     * 链式put
+     * @param key key
+     * @param value value
+     * @return Object value
+     */
+    public JSONObject add(String key, Object value) {
+        put(key, value);
+        return this;
+    }
+
+    /**
+     * 从json获取Object
+     *
+     * @param clazz clazz
+     * @param <T>   T
+     * @return T
+     */
     public <T> T toJavaObject(Class<T> clazz) {
         if (clazz == Map.class || clazz == JSONObject.class || clazz == JSONArray.class) {
             return (T) this;
