@@ -376,7 +376,7 @@ public class JSONArray extends JSON implements List<Object> {
 
     @Override
     public boolean containsAll(Collection c) {
-        return list.containsAll(c);
+        return new HashSet<>(list).containsAll(c);
     }
 
     @Override

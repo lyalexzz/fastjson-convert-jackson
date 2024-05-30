@@ -22,7 +22,7 @@ public class JsonUtil {
      * @return boolean
      */
     public static boolean isJSONObject(String jsonStr) {
-        return !isEmpty(jsonStr) && jsonStr.startsWith("{") && jsonStr.endsWith("}");
+        return !StringUtil.isEmpty(jsonStr) && jsonStr.startsWith("{") && jsonStr.endsWith("}");
     }
 
     /**
@@ -32,7 +32,7 @@ public class JsonUtil {
      * @return boolean
      */
     public static boolean isJSONArray(String jsonStr) {
-        return !isEmpty(jsonStr) && jsonStr.startsWith("[{") && jsonStr.endsWith("}]");
+        return !StringUtil.isEmpty(jsonStr) && jsonStr.startsWith("[{") && jsonStr.endsWith("}]");
     }
 
     /**
@@ -43,16 +43,6 @@ public class JsonUtil {
      */
     public static boolean isJson(String jsonStr) {
         return isJSONObject(jsonStr) || isJSONArray(jsonStr);
-    }
-
-    /**
-     * 判断字符串是否为空
-     *
-     * @param str 字符串
-     * @return boolean
-     */
-    public static boolean isEmpty(String str) {
-        return str == null || str.isEmpty() || "null".equals(str) || "NULL".equals(str);
     }
 
     /**

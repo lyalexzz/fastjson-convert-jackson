@@ -1,6 +1,7 @@
 package com.alibaba.fastjson;
 
 import com.alibaba.fastjson.util.JsonUtil;
+import com.alibaba.fastjson.util.StringUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -38,6 +39,7 @@ public class JSON {
      * @return Object
      */
     public static Object parse(String jsonString) {
+        jsonString = StringUtil.singleQuotesToDoubleQuotes(jsonString);
         if (JsonUtil.isJSONObject(jsonString)) {
             return parseObject(jsonString);
         }
@@ -58,6 +60,7 @@ public class JSON {
      * @return JSONObject
      */
     public static JSONObject parseObject(String jsonString) {
+        jsonString = StringUtil.singleQuotesToDoubleQuotes(jsonString);
         final ObjectMapper objectMapper = new ObjectMapper();
         try {
             final Map map = objectMapper.readValue(jsonString, Map.class);
@@ -77,6 +80,7 @@ public class JSON {
      * @return Object
      */
     public static <T> T parseObject(String jsonString, Class<T> clazz) {
+        jsonString = StringUtil.singleQuotesToDoubleQuotes(jsonString);
         final ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(jsonString, clazz);
@@ -92,6 +96,7 @@ public class JSON {
      * @return JSONArray
      */
     public static JSONArray parseArray(String jsonString) {
+        jsonString = StringUtil.singleQuotesToDoubleQuotes(jsonString);
         final ObjectMapper objectMapper = new ObjectMapper();
         try {
             final List list = objectMapper.readValue(jsonString, List.class);
@@ -137,7 +142,7 @@ public class JSON {
      */
     public static boolean isJsonObj(String str) {
 
-        if (JsonUtil.isEmpty(str)) {
+        if (StringUtil.isEmpty(str)) {
             return false;
         }
         return isWrap(str.trim(), '{', '}');
@@ -150,7 +155,7 @@ public class JSON {
      * @return 是否为JSON字符串
      */
     public static boolean isJsonArray(String str) {
-        if (JsonUtil.isEmpty(str)) {
+        if (StringUtil.isEmpty(str)) {
             return false;
         }
         return isWrap(str.trim(), '[', ']');
@@ -165,7 +170,7 @@ public class JSON {
      * @return 是否为JSON字符串
      */
     private static boolean isWrap(String str, char start, char end) {
-        if (JsonUtil.isEmpty(str)) {
+        if (StringUtil.isEmpty(str)) {
             return false;
         }
         return str.charAt(0) == start && str.charAt(str.length() - 1) == end;

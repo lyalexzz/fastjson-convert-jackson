@@ -51,7 +51,7 @@ public class TypeUtils {
 
         if (value instanceof String) {
             String strVal = (String) value;
-            if (JsonUtil.isEmpty(strVal)) {
+            if (StringUtil.isEmpty(strVal)) {
                 return null;
             }
             return Byte.parseByte(strVal);
@@ -108,7 +108,7 @@ public class TypeUtils {
         }
         if (value instanceof String) {
             String strVal = (String) value;
-            if (JsonUtil.isEmpty(strVal)) {
+            if (StringUtil.isEmpty(strVal)) {
                 return null;
             }
             return Short.parseShort(strVal);
@@ -145,7 +145,7 @@ public class TypeUtils {
             return null;
         }
         String strVal = value.toString();
-        if (JsonUtil.isEmpty(strVal)) {
+        if (StringUtil.isEmpty(strVal)) {
             return null;
         }
         if (strVal.length() > 65535) {
@@ -184,7 +184,7 @@ public class TypeUtils {
                 }
             } else {
                 String strVal = value.toString();
-                if (!JsonUtil.isEmpty(strVal)) {
+                if (!StringUtil.isEmpty(strVal)) {
                     if (strVal.length() <= 65535) {
                         return new BigInteger(strVal);
                     } else {
@@ -213,7 +213,7 @@ public class TypeUtils {
         }
         if (value instanceof String) {
             String strVal = value.toString();
-            if (JsonUtil.isEmpty(strVal)) {
+            if (StringUtil.isEmpty(strVal)) {
                 return null;
             }
             if (strVal.indexOf(',') != -1) {
@@ -244,7 +244,7 @@ public class TypeUtils {
         }
         if (value instanceof String) {
             String strVal = value.toString();
-            if (JsonUtil.isEmpty(strVal)) {
+            if (StringUtil.isEmpty(strVal)) {
                 return null;
             }
             if (strVal.indexOf(',') != -1) {
@@ -309,7 +309,7 @@ public class TypeUtils {
         }
         if (value instanceof String) {
             String strVal = (String) value;
-            if (JsonUtil.isEmpty(strVal)) {
+            if (StringUtil.isEmpty(strVal)) {
                 return null;
             }
             strVal = strVal.replace(",", "");
@@ -466,7 +466,7 @@ public class TypeUtils {
 
         if (value instanceof String) {
             String strVal = (String) value;
-            if (JsonUtil.isEmpty(strVal)) {
+            if (StringUtil.isEmpty(strVal)) {
                 return null;
             }
             if ("true".equalsIgnoreCase(strVal) || "1".equals(strVal)) {
