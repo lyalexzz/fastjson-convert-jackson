@@ -358,6 +358,17 @@ public class JSONObject extends JSON implements Map<String, Object> {
         return parseObject(toJSONString(), clazz);
     }
 
+    /**
+     * 获取JSONObject对应类型的集合
+     *
+     * @param jsonString json字符串
+     * @param clazz      类型
+     * @param <T>        泛型
+     */
+    public static <T> List<T> getTypeArray(String jsonString, Class<T> clazz) {
+        return JSON.getTypeArray(jsonString, clazz);
+    }
+
     @Override
     public String toString() {
         return toJSONString();

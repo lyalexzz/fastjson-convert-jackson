@@ -14,9 +14,5 @@ public class JsonDemo {
 
     public static void main(String[] args) {
         List<JSONObject> jsonObjects = new ArrayList<>();
-        //单引号的json字符串
-        String jsonStr = "{'name':'LiYu'}";
-        System.out.println(JSONObject.parseObject(jsonStr));
-
     }
 }

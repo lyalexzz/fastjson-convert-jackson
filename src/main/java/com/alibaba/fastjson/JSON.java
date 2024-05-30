@@ -176,5 +176,22 @@ public class JSON {
         return str.charAt(0) == start && str.charAt(str.length() - 1) == end;
     }
 
+    /**
+     * 获取JSONObject对应类型的集合
+     *
+     * @param jsonString json字符串
+     * @param clazz      类型
+     * @param <T>        泛型
+     */
+    public static <T> List<T> getTypeArray(String jsonString, Class<T> clazz) {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, clazz);
+            return objectMapper.readValue(jsonString, javaType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
