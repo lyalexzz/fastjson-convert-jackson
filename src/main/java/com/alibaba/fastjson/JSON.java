@@ -3,10 +3,12 @@ package com.alibaba.fastjson;
 import com.alibaba.fastjson.util.JsonUtil;
 import com.alibaba.fastjson.util.StringUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -193,5 +195,24 @@ public class JSON {
         }
     }
 
+    /**
+     * 获取JSONObject对应类型的集合
+     * @param jsonString json字符串
+     * @param type 类型
+     * @param <T> 泛型
+     */
+    public static <T> T parseObject(String jsonString, TypeReference<T> type) {
+        Type clazz = type.getType();
+        try {
+            return new ObjectMapper().readValue(jsonString, new TypeReference<T>() {
+                @Override
+                public Type getType() {
+                    return clazz;
+                }
+            });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

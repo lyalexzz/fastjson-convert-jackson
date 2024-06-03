@@ -1,8 +1,7 @@
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.type.TypeReference;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author LiYu
@@ -13,6 +12,14 @@ import java.util.List;
 public class JsonDemo {
 
     public static void main(String[] args) {
-        List<JSONObject> jsonObjects = new ArrayList<>();
+        //List<JSONObject> jsonObjects = new ArrayList<>();
+        testType();
+    }
+
+    // test TypeReference
+    public static void testType() {
+        String jsonString = "{\"name\":\"tengyy\",\"age\":18}";
+        Map<String, Object> map = JSON.parseObject(jsonString, new TypeReference<Map<String, Object>>() {});
+        System.out.println(map);
     }
 }
