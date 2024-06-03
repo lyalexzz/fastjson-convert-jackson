@@ -1,5 +1,5 @@
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.alibaba.fastjson.TypeReference;
 
 import java.util.Map;
 

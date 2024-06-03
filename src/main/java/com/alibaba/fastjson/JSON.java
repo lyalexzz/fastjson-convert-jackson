@@ -3,7 +3,6 @@ package com.alibaba.fastjson;
 import com.alibaba.fastjson.util.JsonUtil;
 import com.alibaba.fastjson.util.StringUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
