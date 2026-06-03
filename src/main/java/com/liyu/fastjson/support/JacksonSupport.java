@@ -16,6 +16,7 @@ import com.liyu.fastjson.parser.Feature;
 import com.liyu.fastjson.serializer.SerializerFeature;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.TimeZone;
 
@@ -60,7 +61,7 @@ public final class JacksonSupport {
      * @return ObjectWriter
      */
     public static ObjectWriter writer(SerializerFeature... features) {
-        return configureWriter(DEFAULT_MAPPER.writer(), features);
+        return createWriter(DEFAULT_MAPPER, features);
     }
 
     /**
@@ -71,7 +72,44 @@ public final class JacksonSupport {
      * @return ObjectWriter
      */
     public static ObjectWriter writer(ObjectMapper mapper, SerializerFeature... features) {
-        return configureWriter(mapper.writer(), features);
+        return createWriter(mapper, features);
+    }
+
+    private static ObjectWriter createWriter(ObjectMapper baseMapper, SerializerFeature... features) {
+        if (features == null || features.length == 0) {
+            return baseMapper.writer();
+        }
+        EnumSet<SerializerFeature> set = EnumSet.noneOf(SerializerFeature.class);
+        for (SerializerFeature feature : features) {
+            set.add(feature);
+        }
+
+        ObjectMapper mapper = baseMapper;
+        boolean needMapperCopy = set.contains(SerializerFeature.WriteMapNullValue)
+                || set.contains(SerializerFeature.SortField)
+                || set.contains(SerializerFeature.MapSortField);
+        if (needMapperCopy) {
+            mapper = baseMapper.copy();
+            if (set.contains(SerializerFeature.WriteMapNullValue)) {
+                mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+            }
+            if (set.contains(SerializerFeature.SortField) || set.contains(SerializerFeature.MapSortField)) {
+                mapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
+            }
+        }
+
+        ObjectWriter writer = mapper.writer();
+
+        if (set.contains(SerializerFeature.PrettyFormat)) {
+            writer = writer.with(SerializationFeature.INDENT_OUTPUT);
+        }
+        if (set.contains(SerializerFeature.WriteDateUseDateFormat)) {
+            writer = writer.without(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        }
+        if (set.contains(SerializerFeature.UseSingleQuotes)) {
+            writer = writer.without(com.fasterxml.jackson.core.JsonGenerator.Feature.QUOTE_FIELD_NAMES);
+        }
+        return writer;
     }
 
     private static ObjectMapper createDefaultMapper() {
@@ -107,43 +145,13 @@ public final class JacksonSupport {
             return;
         }
         EnumSet<Feature> set = EnumSet.noneOf(Feature.class);
-        for (Feature feature : features) {
-            set.add(feature);
-        }
+        Collections.addAll(set, features);
         mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, set.contains(Feature.AllowComment));
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, set.contains(Feature.AllowUnQuotedFieldNames));
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, set.contains(Feature.AllowSingleQuotes));
         mapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, set.contains(Feature.AllowArbitraryCommas));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, !set.contains(Feature.IgnoreNotMatch));
         mapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, set.contains(Feature.OrderedField));
-    }
-
-    private static ObjectWriter configureWriter(ObjectWriter writer, SerializerFeature... features) {
-        if (features == null || features.length == 0) {
-            return writer;
-        }
-        EnumSet<SerializerFeature> set = EnumSet.noneOf(SerializerFeature.class);
-        for (SerializerFeature feature : features) {
-            set.add(feature);
-        }
-
-        if (set.contains(SerializerFeature.WriteMapNullValue)) {
-            writer = writer.with(com.fasterxml.jackson.annotation.JsonInclude.Value.empty()
-                    .withValueInclusion(JsonInclude.Include.ALWAYS));
-        }
-        if (set.contains(SerializerFeature.PrettyFormat)) {
-            writer = writer.with(SerializationFeature.INDENT_OUTPUT);
-        }
-        if (set.contains(SerializerFeature.SortField) || set.contains(SerializerFeature.MapSortField)) {
-            writer = writer.with(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
-        }
-        if (set.contains(SerializerFeature.WriteDateUseDateFormat)) {
-            writer = writer.without(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        }
-        if (set.contains(SerializerFeature.UseSingleQuotes)) {
-            writer = writer.with(com.fasterxml.jackson.core.JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
-        }
-        return writer;
     }
 
     /**
